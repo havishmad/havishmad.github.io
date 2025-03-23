@@ -3,103 +3,642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Index</title>
+    <title>Retail Store Inventory Checklist</title>
     <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #166088;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --background: #f0f2f5;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            background-color: var(--background);
+            padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
         }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: contain;
-            background-color: #f0f0f0;
-            border-bottom: 1px solid #eee;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        .card-content {
-            padding: 20px;
-        }
-        .card-title {
-            font-size: 1.4rem;
-            margin-top: 0;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        .card-link {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #4285f4;
+        
+        header {
+            background-color: var(--primary);
             color: white;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        .card-link:hover {
-            background-color: #3367d6;
+        
+        h1 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .date-picker, .search-container, .export-btn, .reset-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        input, button {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        
+        button {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        .export-btn button {
+            background-color: var(--success);
+            color: white;
+            border: none;
+        }
+        
+        .reset-btn button {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+        }
+        
+        .search-container input {
+            width: 200px;
+        }
+        
+        .progress-container {
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .progress-bar {
+            background-color: #ddd;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            background-color: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+        
+        .inventory-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background-color: var(--secondary);
+            color: white;
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        
+        .status-dropdown {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            width: 120px;
+        }
+        
+        .status-green {
+            color: var(--success);
+            border-color: var(--success);
+        }
+        
+        .status-orange {
+            color: var(--warning);
+            border-color: var(--warning);
+        }
+        
+        .status-red {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        
+        .notes-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 40px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+            
+            th:nth-child(4), td:nth-child(4) {
+                display: none;
+            }
+            
+            .responsive-table {
+                overflow-x: auto;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            th:nth-child(3), td:nth-child(3) {
+                display: none;
+            }
+            
+            .search-container input {
+                width: 100%;
+            }
+        }
+        
+        #save-timestamp {
+            font-size: 0.8rem;
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Project Index</h1>
-
-<!-- Navigation -->
-<div class="nav">
-    <a href="index.html">Home Page</a>
-</div>
+    <header>
+        <h1>📋 Retail Store Inventory Checklist</h1>
+        
+        <div class="controls">
+            <div class="date-picker">
+                <span>📅 Date:</span>
+                <input type="date" id="inventory-date">
+            </div>
+            
+            <div class="search-container">
+                <span>🔍 Search:</span>
+                <input type="text" id="search-input" placeholder="Filter items...">
+            </div>
+            
+            <div class="export-btn">
+                <button id="export-csv">
+                    📦 Save as CSV
+                </button>
+            </div>
+            
+            <div class="reset-btn">
+                <button id="reset-btn">
+                    🔄 Reset
+                </button>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <span>Overall Progress:</span>
+            <div class="progress-bar">
+                <div class="progress" id="progress-indicator">0%</div>
+            </div>
+        </div>
+        
+        <div id="save-timestamp"></div>
+    </header>
     
-    <div class="grid-container">
-        <!-- Accident Case Study -->
-        <div class="card">
-            <img src="image1.jpg" alt="Accident Case Study Thumbnail" class="card-img">
-            <div class="card-content">
-                <h2 class="card-title">Accident Case Study</h2>
-                <a href="Accident Case Study.html" class="card-link">View Project</a>
-            </div>
-        </div>
-        
-        <!-- Accident Markmap -->
-        <div class="card">
-            <img src="image2.jpg" alt="Accident Markmap Thumbnail" class="card-img">
-            <div class="card-content">
-                <h2 class="card-title">Accident Markmap</h2>
-                <a href="Accident Markmap.html" class="card-link">View Project</a>
-            </div>
-        </div>
-        
-        <!-- Acryclic SOP -->
-        <div class="card">
-            <img src="image3.jpg" alt="Acryclic SOP Thumbnail" class="card-img">
-            <div class="card-content">
-                <h2 class="card-title">Acryclic SOP</h2>
-                <a href="Acryclic SOP.html" class="card-link">View Project</a>
-            </div>
+    <div class="inventory-container">
+        <div class="responsive-table">
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Status</th>
+                        <th>Quantity</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-item="T-shirts">
+                        <td>
+                            <div class="item-name">
+                                <span>👕 T-shirts</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Jeans">
+                        <td>
+                            <div class="item-name">
+                                <span>👖 Jeans</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Sneakers">
+                        <td>
+                            <div class="item-name">
+                                <span>👟 Sneakers</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Backpacks">
+                        <td>
+                            <div class="item-name">
+                                <span>🎒 Backpacks</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Sunglasses">
+                        <td>
+                            <div class="item-name">
+                                <span>🕶️ Sunglasses</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Watches">
+                        <td>
+                            <div class="item-name">
+                                <span>⌚ Watches</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Hats">
+                        <td>
+                            <div class="item-name">
+                                <span>🧢 Hats</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Scarves">
+                        <td>
+                            <div class="item-name">
+                                <span>🧣 Scarves</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Handbags">
+                        <td>
+                            <div class="item-name">
+                                <span>👜 Handbags</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                    <tr data-item="Belts">
+                        <td>
+                            <div class="item-name">
+                                <span>�belt Belt</span>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="status-dropdown">
+                                <option value="pending">⏳ Pending</option>
+                                <option value="instock">✅ In Stock</option>
+                                <option value="low">⚠️ Low Stock</option>
+                                <option value="outofstock">❌ Out of Stock</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" min="0" class="quantity-input" value="0">
+                        </td>
+                        <td>
+                            <textarea class="notes-input" placeholder="Add notes..."></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            document.getElementById('inventory-date').value = dateString;
+            
+            // Variables
+            const table = document.getElementById('inventory-table');
+            const searchInput = document.getElementById('search-input');
+            const exportBtn = document.getElementById('export-csv');
+            const resetBtn = document.getElementById('reset-btn');
+            const progressIndicator = document.getElementById('progress-indicator');
+            const timestampEl = document.getElementById('save-timestamp');
+            const statusDropdowns = document.querySelectorAll('.status-dropdown');
+            
+            // Color-code status dropdowns based on selection
+            statusDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('change', function() {
+                    // Remove all status classes
+                    this.classList.remove('status-green', 'status-orange', 'status-red');
+                    
+                    // Add appropriate class based on selected value
+                    if (this.value === 'instock') {
+                        this.classList.add('status-green');
+                    } else if (this.value === 'low') {
+                        this.classList.add('status-orange');
+                    } else if (this.value === 'outofstock') {
+                        this.classList.add('status-red');
+                    }
+                    
+                    updateProgress();
+                });
+            });
+            
+            // Update progress bar
+            function updateProgress() {
+                const totalItems = statusDropdowns.length;
+                let completed = 0;
+                
+                statusDropdowns.forEach(dropdown => {
+                    if (dropdown.value !== 'pending') {
+                        completed++;
+                    }
+                });
+                
+                const percentage = Math.round((completed / totalItems) * 100);
+                progressIndicator.style.width = percentage + '%';
+                progressIndicator.textContent = percentage + '%';
+            }
+            
+            // Search/filter functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const rows = table.querySelectorAll('tbody tr');
+                
+                rows.forEach(row => {
+                    const itemName = row.getAttribute('data-item').toLowerCase();
+                    const notes = row.querySelector('.notes-input').value.toLowerCase();
+                    
+                    if (itemName.includes(searchTerm) || notes.includes(searchTerm)) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Export to CSV
+            exportBtn.addEventListener('click', function() {
+                // Collect data
+                const rows = table.querySelectorAll('tbody tr');
+                const date = document.getElementById('inventory-date').value;
+                let csvContent = "data:text/csv;charset=utf-8,";
+                
+                // Add headers
+                csvContent += "Item,Status,Quantity,Notes,Date\n";
+                
+                // Add data rows
+                rows.forEach(row => {
+                    const item = row.getAttribute('data-item');
+                    const status = row.querySelector('.status-dropdown').value;
+                    const quantity = row.querySelector('.quantity-input').value;
+                    let notes = row.querySelector('.notes-input').value;
+                    
+                    // Escape quotes in notes
+                    notes = notes.replace(/"/g, '""');
+                    
+                    // Add row to CSV
+                    csvContent += `"${item}","${status}","${quantity}","${notes}","${date}"\n`;
+                });
+                
+                // Create download link
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", `inventory_${date}.csv`);
+                document.body.appendChild(link);
+                
+                // Download file
+                link.click();
+                document.body.removeChild(link);
+                
+                // Update timestamp
+                const now = new Date();
+                timestampEl.textContent = `⏱ Last saved: ${now.toLocaleString()}`;
+            });
+            
+            // Reset button
+            resetBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset all inventory data?')) {
+                    // Reset all dropdowns
+                    statusDropdowns.forEach(dropdown => {
+                        dropdown.value = 'pending';
+                        dropdown.classList.remove('status-green', 'status-orange', 'status-red');
+                    });
+                    
+                    // Reset all quantities
+                    const quantityInputs = document.querySelectorAll('.quantity-input');
+                    quantityInputs.forEach(input => {
+                        input.value = 0;
+                    });
+                    
+                    // Reset all notes
+                    const notesInputs = document.querySelectorAll('.notes-input');
+                    notesInputs.forEach(input => {
+                        input.value = '';
+                    });
+                    
+                    // Reset progress
+                    updateProgress();
+                    
+                    // Reset timestamp
+                    timestampEl.textContent = '';
+                }
+            });
+            
+            // Initialize progress bar
+            updateProgress();
+        });
+    </script>
 </body>
 </html>
