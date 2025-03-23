@@ -3,65 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Pages Site</title>
+    <title>Project Index</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
         h1 {
             color: #333;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            text-align: center;
+            margin-bottom: 40px;
         }
-        nav {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 20px 0;
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: 20px;
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
-        nav a {
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .card-link {
+            display: inline-block;
             text-decoration: none;
-            color: #0366d6;
+            background-color: #4285f4;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
             font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
-        nav a:hover {
-            background-color: #e3e3e3;
-        }
-        .content {
-            padding: 20px 0;
+        .card-link:hover {
+            background-color: #3367d6;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to My GitHub Pages Site</h1>
+    <h1>Project Index</h1>
     
-    <nav>
-        <ul>
-            <li><a href="Landmark Product Quality Checklist.html">HTML 1</a></li>
-            <li><a href="html2.html">HTML 2</a></li>
-            <li><a href="html3.html">HTML 3</a></li>
-        </ul>
-    </nav>
-    
-    <div class="content">
-        <h2>Home Page</h2>
-        <p>Welcome to my website! Click on the links above to navigate to different pages.</p>
-        <p>This is the main page of my GitHub Pages site. I've created three additional HTML pages that you can access using the navigation menu.</p>
+    <div class="grid-container">
+        <!-- Accident Case Study -->
+        <div class="card">
+            <img src="image1.jpg" alt="Accident Case Study Thumbnail" class="card-img">
+            <div class="card-content">
+                <h2 class="card-title">Accident Case Study</h2>
+                <a href="Accident Case Study.html" class="card-link">View Project</a>
+            </div>
+        </div>
+        
+        <!-- Accident Markmap -->
+        <div class="card">
+            <img src="image2.jpg" alt="Accident Markmap Thumbnail" class="card-img">
+            <div class="card-content">
+                <h2 class="card-title">Accident Markmap</h2>
+                <a href="Accident Markmap.html" class="card-link">View Project</a>
+            </div>
+        </div>
+        
+        <!-- Acryclic SOP -->
+        <div class="card">
+            <img src="image3.jpg" alt="Acryclic SOP Thumbnail" class="card-img">
+            <div class="card-content">
+                <h2 class="card-title">Acryclic SOP</h2>
+                <a href="Acryclic SOP.html" class="card-link">View Project</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>
