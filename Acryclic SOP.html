@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acrylic Acid Leak SOP - Bharat Petroleum</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background-color: #005baa; /* BPCL Blue */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .header img {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .step {
+            width: 200px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            border-radius: 5px;
+            position: relative;
+            font-weight: bold;
+        }
+        .step-content {
+            font-size: 14px;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+        .detection {
+            background-color: #ff9800;
+            color: white;
+        }
+        .alert {
+            background-color: #f44336;
+            color: white;
+        }
+        .response {
+            background-color: #4caf50;
+            color: white;
+        }
+        .control {
+            background-color: #2196f3;
+            color: white;
+        }
+        .cleanup {
+            background-color: #9c27b0;
+            color: white;
+        }
+        .report {
+            background-color: #795548;
+            color: white;
+        }
+        .arrow {
+            height: 30px;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .arrow::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #333;
+            position: absolute;
+        }
+        .decision {
+            width: 200px;
+            height: 100px;
+            background-color: #ffeb3b;
+            color: black;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+            position: relative;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            padding: 20px;
+        }
+        .decision-paths {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+        .path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 45%;
+        }
+        .path-label {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .note-box {
+            background-color: #fffde7;
+            border-left: 4px solid #ffd600;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .warning-box {
+            background-color: #ffebee;
+            border-left: 4px solid #d50000;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        h1, h2, h3 {
+            color: #005baa;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/api/placeholder/200/60" alt="Bharat Petroleum Logo">
+            <h1>STANDARD OPERATING PROCEDURE (SOP)</h1>
+            <h2>ACRYLIC ACID LEAK EMERGENCY RESPONSE</h2>
+        </div>
+
+        <div class="warning-box">
+            <h3>CHEMICAL HAZARD INFORMATION: ACRYLIC ACID</h3>
+            <p><strong>CAS Number:</strong> 79-10-7</p>
+            <p><strong>Hazards:</strong> Corrosive, flammable liquid, toxic by inhalation, causes severe skin burns and eye damage</p>
+            <p><strong>Exposure Limits:</strong> TWA: 2 ppm (ACGIH), STEL: 15 ppm</p>
+            <p><strong>Flash Point:</strong> 50°C (122°F)</p>
+            <p><strong>Auto-ignition Temperature:</strong> 438°C (820°F)</p>
+        </div>
+
+        <div class="flowchart">
+            <div class="step detection">
+                LEAK DETECTION
+                <div class="step-content">
+                    • Visual observation<br>
+                    • Acrid odor detection<br>
+                    • Leak detection alarms<br>
+                    • Process monitoring anomalies
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="step alert">
+                RAISE ALARM
+                <div class="step-content">
+                    • Activate emergency alarm<br>
+                    • Notify shift supervisor<br>
+                    • Contact emergency response team<br>
+                    • Call control room: [EMERGENCY NUMBER]
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="decision">
+                Assess Leak Severity
+            </div>
+            
+            <div class="decision-paths">
+                <div class="path">
+                    <div class="path-label">MINOR LEAK</div>
+                    <div class="arrow"></div>
+                    <div class="step response">
+                        IMMEDIATE RESPONSE
+                        <div class="step-content">
+                            • Don appropriate PPE<br>
+                            • Isolate area (10m radius)<br>
+                            • Stop leak at source if safe<br>
+                            • Use acid spill kit
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="path">
+                    <div class="path-label">MAJOR LEAK</div>
+                    <div class="arrow"></div>
+                    <div class="step alert">
+                        EVACUATION & RESPONSE
+                        <div class="step-content">
+                            • Evacuate area (100m radius)<br>
+                            • Activate plant emergency response<br>
+                            • Notify external emergency services<br>
+                            • Alert nearby facilities
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="step control">
+                CONTROL MEASURES
+                <div class="step-content">
+                    • Establish hot/warm/cold zones<br>
+                    • Deploy vapor suppression (foam/water spray)<br>
+                    • Contain runoff with dikes/absorbents<br>
+                    • Monitor air quality (LEL, VOC readings)
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="step cleanup">
+                CLEANUP PROCEDURES
+                <div class="step-content">
+                    • Neutralize with sodium carbonate/bicarbonate<br>
+                    • Absorb with inert material<br>
+                    • Collect in appropriate containers<br>
+                    • Dispose as hazardous waste<br>
+                    • Decontaminate area with alkaline solution
+                </div>
+            </div>
+            
+            <div class="arrow"></div>
+            
+            <div class="step report">
+                POST-INCIDENT ACTIONS
+                <div class="step-content">
+                    • Medical assessment of exposed personnel<br>
+                    • Document incident details<br>
+                    • Conduct investigation<br>
+                    • Report to regulatory authorities<br>
+                    • Implement corrective actions
+                </div>
+            </div>
+        </div>
+        
+        <div class="note-box">
+            <h3>REQUIRED PPE FOR ACRYLIC ACID RESPONSE:</h3>
+            <ul>
+                <li><strong>Respiratory Protection:</strong> SCBA or full-face respirator with organic vapor/acid gas cartridge</li>
+                <li><strong>Skin Protection:</strong> Chemical-resistant suit (Level A/B for major leaks)</li>
+                <li><strong>Hand Protection:</strong> Butyl rubber or neoprene gloves</li>
+                <li><strong>Eye Protection:</strong> Chemical splash goggles and face shield</li>
+                <li><strong>Foot Protection:</strong> Chemical-resistant boots</li>
+            </ul>
+        </div>
+        
+        <div class="warning-box">
+            <h3>CRITICAL SAFETY NOTES:</h3>
+            <ul>
+                <li>Acrylic acid can polymerize explosively if exposed to heat or incompatible materials</li>
+                <li>Always approach from upwind direction</li>
+                <li>Remove all ignition sources</li>
+                <li>Do not use water jet on leaking material</li>
+                <li>Prevent entry into waterways, sewers, or confined areas</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>DOCUMENT NO: BPCL-SOP-HAZ-AA-001 | REVISION: 03 | EFFECTIVE DATE: MARCH 2025</p>
+            <p>FOR OFFICIAL USE ONLY - BHARAT PETROLEUM CORPORATION LIMITED</p>
+        </div>
+    </div>
+</body>
+</html>

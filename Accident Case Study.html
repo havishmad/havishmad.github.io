@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refinery Fire Incident Case Study</title>
+    <style>
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #2874a6;
+            --tertiary-color: #3498db;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --highlight-color: #f39c12;
+            --success-color: #27ae60;
+            --danger-color: #c0392b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        
+        .case-meta {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .meta-item {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .collapsible {
+            background-color: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            border-radius: 8px;
+            transition: 0.4s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .active, .collapsible:hover {
+            background-color: var(--tertiary-color);
+        }
+        
+        .collapsible:after {
+            content: '\002B';
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+        }
+        
+        .active:after {
+            content: "\2212";
+        }
+        
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .content-inner {
+            padding: 20px;
+        }
+        
+        .subcategory {
+            background-color: #e3f2fd;
+            margin: 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .subcategory-header {
+            background-color: var(--tertiary-color);
+            color: white;
+            padding: 12px 18px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .subcategory-content {
+            padding: 15px;
+            display: none;
+        }
+        
+        .observation-item, .recommendation-item, .root-cause-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-left: 3px solid var(--tertiary-color);
+            background-color: #f9f9f9;
+        }
+        
+        .recommendation-item {
+            border-left-color: var(--success-color);
+        }
+        
+        .root-cause-item {
+            border-left-color: var(--danger-color);
+        }
+        
+        .number-badge {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            background-color: var(--tertiary-color);
+            color: white;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            line-height: 25px;
+            flex-shrink: 0;
+        }
+        
+        .recommendation-item .number-badge {
+            background-color: var(--success-color);
+        }
+        
+        .root-cause-item .number-badge {
+            background-color: var(--danger-color);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--secondary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+        
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: white;
+            border: 4px solid var(--highlight-color);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .left::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            right: 30px;
+            border: medium solid var(--border-color);
+            border-width: 10px 0 10px 10px;
+            border-color: transparent transparent transparent white;
+        }
+        
+        .right::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 22px;
+            width: 0;
+            z-index: 1;
+            left: 30px;
+            border: medium solid var(--border-color);
+            border-width: 10px 10px 10px 0;
+            border-color: transparent white transparent transparent;
+        }
+        
+        .right::after {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-time {
+            font-weight: bold;
+            color: var(--highlight-color);
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-size: 0.8em;
+            background-color: #eee;
+        }
+        
+        .tag-critical {
+            background-color: #ffebee;
+            color: var(--danger-color);
+            border: 1px solid #ffcdd2;
+        }
+        
+        .tag-important {
+            background-color: #fff8e1;
+            color: #ff8f00;
+            border: 1px solid #ffe082;
+        }
+        
+        .tag-note {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border: 1px solid #c8e6c9;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-container::before {
+                left: 60px;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+
+            .left::after, .right::after {
+                left: 15px;
+            }
+
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Refinery Fire Incident Case Study</h1>
+        <div class="case-meta">
+            <div class="meta-item">Ref: OISD/CS/2024-25/P&E/09</div>
+            <div class="meta-item">Date: 23/09/24</div>
+            <div class="meta-item">Location: Refinery</div>
+            <div class="meta-item">Loss: INR 85 lacs</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <button class="collapsible">Introduction & Brief of the Incident</button>
+        <div class="content">
+            <div class="content-inner">
+                <p>The motor of total pump around (TPA) pump of Jute Batching Oil (JBO) stripper column in vicinity of the stripper rundown pump and located below the pipe rack in Combined Distillation unit (CDU), was to be removed from field and taken to workshop for shaft hub job to align it with the new coupling.</p>
+                
+                <p>The forklift was brought to the location for motor removal job. Two contract workmen of rotary department hooked up a web sling in eye bolt of the motor to lift it, but fork could not be brought above eyebolt level as its travel was restricted due to an overhead beam of the pipe rack. Hence, the lifting was stopped, and the forklift backed out.</p>
+                
+                <p>While backing the forklift, a sudden release of hot hydrocarbon occurred. The released hot hydrocarbon caught fire within moments.</p>
+            </div>
+        </div>
+        
+        <button class="collapsible">Observations & Shortcomings (16 Findings)</button>
+        <div class="content">
+            <div class="content-inner">
+                <div class="subcategory">
+                    <div class="subcategory-header">Physical Damage & Direct Causes <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">1</div>
+                            One of the impulse line HP tapping of flow transmitter of JBO rundown pumps' common discharge line, was found sheared from the orifice flange (upstream of root valve).
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">2</div>
+                            The flow transmitter connection piping upto root valve was found bent implying being hit and dragged.
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">3</div>
+                            The impulse line was just above the TPA pump whose motor was attempted to be lifted.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Equipment & Spatial Factors <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">4</div>
+                            The height of the tapping was 3350mm. The forklift mast height was 2250mm. On lifting the forklift, the height can reach upto 3500mm.
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">5</div>
+                            There was a scaffolding immediately in front of motor of TPA pump that was hindering free movement of both man and vehicle. This was built in two month ago for completing the post turn around insulation jobs in pipe alley.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Process & Material Properties <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">6</div>
+                            Process parameter was checked for any abnormality but was found normal in DCS trends prior to incident.
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">7</div>
+                            The JBO rundown was at the temperature of 331°C. The autoignition temperature of the material was 310°C.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Work Practices & Planning <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">8</div>
+                            Although the site survey had been done by the Maintenance Engineer prior to execution of job, he had failed to assess the clearance available for lifting of the motor, resulting in failure in task of upliftment of motor.
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">9</div>
+                            It was observed that in the work permit issued for vehicle entry under the hot work permit category, any requirement of JSA and supervision was not mentioned.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Equipment Integrity <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">10</div>
+                            The unit was under M&I shutdown four months ago of the incident. During the M&I shut down, hydrotest of the JBO circuit was done at 20kg/cm² and no leak/ pressure drop had been observed. Thickness survey was also carried out of the same circuit and thickness was found in allowable limit.
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">12</div>
+                            JBO Pump one year PM records checked for any abnormal vibration or another abnormality, but no abnormality was observed.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Emergency Response <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">11</div>
+                            It was observed that unit shutdown was initiated after 5 minutes of fire. subsequently JBO pump was stopped after 12 minutes of fire and rundown control valve was closed after 14 minutes of fire. The pressure in the line was 10 kg/cm²g at the time of incident. Accordingly, the material in the line must have continued to gush out with high flow till the pump was stopped. Subsequently, the flow must have ebbed till the line emptied, resulting in significant release of hot hydrocarbon in open atmosphere.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Training & Certification <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">13</div>
+                            Forklift fitness certificate was (FORM-11) in order and the equipment was fit for use. Forklift operator's driving license was valid for forklift operation.
+                        </div>
+                        <div class="observation-item">
+                            <div class="number-badge">14</div>
+                            In the forklift work-order/ contract did not mention about any training requirement of forklift operation. Induction safety training had been provided to the operator.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Monitoring & Surveillance <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">15</div>
+                            No CCTV was installed in the unit.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Damage Assessment <span>+</span></div>
+                    <div class="subcategory-content">
+                        <div class="observation-item">
+                            <div class="number-badge">16</div>
+                            Major damage occurred to electrical/instrument cables, cable tray, light fittings, pipes, flanges, etc. All the six tiers of pipe rack were found affected by fire. Total 22 lines were affected. Six number utility lines (2" and below) were observed sagged and bowed. No sagging was observed in any structure. Total damage (Static + Electrical + Instrumentation) was evaluated around INR85 lacs as per the detailed submitted by the entity.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">Root Causes</button>
+        <div class="content">
+            <div class="content-inner">
+                <div class="root-cause-item">
+                    <div class="number-badge">1</div>
+                    Forklift hit the flow transmitter impulse piping during the backing of the forklift after abandoning the lift operation (without fully lowering the fork) resulting in shearing of the impulse line piping from the root.
+                </div>
+                <div class="root-cause-item">
+                    <div class="number-badge">2</div>
+                    The JBO in the pipeline, which was above auto ignition temperature (i.e. 310°C), gushed out and self-ignited, resulting in the fire.
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">Recommendations (7)</button>
+        <div class="content">
+            <div class="content-inner">
+                <div class="recommendation-item">
+                    <div class="number-badge">1</div>
+                    <div class="tag tag-critical">Training</div>
+                    <div class="tag tag-important">Competency</div>
+                    Operators of mobile lifting equipment (inclusive of crane/forklift/Farhana) shall have minimum training in line with procedure given in IS13583. A robust mechanism should be developed for competency assessment before deploying the person. As per High Level Committee recommendations (Ref. recommendation 14 of HLC on Baghjan incident)- Competency criteria of key operating personnel shall be explicitly included in tender and to be ensured.
+                </div>
+                <div class="recommendation-item">
+                    <div class="number-badge">2</div>
+                    <div class="tag tag-critical">Work Practice</div>
+                    <div class="tag tag-important">Risk Assessment</div>
+                    Safe work practice shall be ensured as per Cl.7.3 of OISD-GDN-206 like, Identification of anticipated or inherent/ specific hazard in running plant full of hydrocarbon and risk involved should be done through:
+                    <ul>
+                        <li>Systematic evaluation of stepwise activities involved in the non-routine job or it's execution.</li>
+                        <li>Identification of possible unsafe conditions in the surrounding</li>
+                        <li>Identification of Hazard and risk from other job in the vicinity (if any).</li>
+                    </ul>
+                    The TBRA/JSA shall be job specific. It shall identify the hazards, potential consequences, and risks associated with job as per Cl.6.3.1 of OISD-STD-105.
+                </div>
+                <div class="recommendation-item">
+                    <div class="number-badge">3</div>
+                    <div class="tag tag-critical">Monitoring</div>
+                    <div class="tag tag-important">Surveillance</div>
+                    Monitoring of critical activities through CCTV with adequate recording facility shall be ensured. Scrutiny of footage manually or through AI techniques should be explored to identify unsafe acts/ conditions and take rectification measures thereof. High-risk activities should be monitored through CCTV in line with Cl.7.10.1(b) of Working Group recommendation.
+                </div>
+                <div class="recommendation-item">
+                    <div class="number-badge">4</div>
+                    <div class="tag tag-critical">Emergency Response</div>
+                    Entity shall review the delayed shutdown initiation.
+                </div>
+                <div class="recommendation-item">
+                    <div class="number-badge">5</div>
+                    <div class="tag tag-critical">Site Assessment</div>
+                    <div class="tag tag-important">Accessibility</div>
+                    Accessibility to the job site and working space should be assessed and ensured before executing/ conducting the job.
+                </div>
+                <div class="recommendation-item">
+                    <div class="number-badge">6</div>
+                    <div class="tag tag-critical">Visual Indicators</div>
+                    Minimum height at lowest point of the bottom most pipe-rack should be stencilled in units for information to all concerned.
+                </div>
+                <div class="recommendation-item">
+                    <div class="number-badge">7</div>
+                    <div class="tag tag-critical">Training</div>
+                    <div class="tag tag-important">Emergency Preparedness</div>
+                    Periodic process mock exercises should be conducted in process installations for hands on emergency handling experience for asset facing supervisors and workers in line with Cl.7.6.11 of OISD-GDN-206.
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">Incident Timeline</button>
+        <div class="content">
+            <div class="content-inner">
+                <div class="timeline">
+                    <div class="timeline-container left">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T-0</div>
+                            <p>Forklift backs out after abandoning lift operation</p>
+                            <div class="tag tag-critical">Critical Event</div>
+                        </div>
+                    </div>
+                    <div class="timeline-container right">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T+0</div>
+                            <p>Impulse line struck and sheared</p>
+                            <div class="tag tag-critical">Critical Event</div>
+                        </div>
+                    </div>
+                    <div class="timeline-container left">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T+<1 min</div>
+                            <p>Hot hydrocarbon release (331°C) above autoignition temperature (310°C)</p>
+                            <div class="tag tag-critical">Critical Event</div>
+                        </div>
+                    </div>
+                    <div class="timeline-container right">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T+<1 min</div>
+                            <p>Fire erupts</p>
+                            <div class="tag tag-critical">Critical Event</div>
+                        </div>
+                    </div>
+                    <div class="timeline-container left">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T+5 min</div>
+                            <p>Unit shutdown initiated</p>
+                            <div class="tag tag-important">Response Action</div>
+                        </div>
+                    </div>
+                    <div class="timeline-container right">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T+12 min</div>
+                            <p>JBO pump stopped</p>
+                            <div class="tag tag-important">Response Action</div>
+                        </div>
+                    </div>
+                    <div class="timeline-container left">
+                        <div class="timeline-content">
+                            <div class="timeline-time">T+14 min</div>
+                            <p>Rundown control valve closed</p>
+                            <div class="tag tag-important">Response Action</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">Key Learnings & Preventive Measures</button>
+        <div class="content">
+            <div class="content-inner">
+                <div class="subcategory">
+                    <div class="subcategory-header">Equipment Operation <span>+</span></div>
+                    <div class="subcategory-content">
+                        <ul>
+                            <li>Always fully lower forks when backing out or maneuvering forklifts in tight spaces</li>
+                            <li>Ensure proper clearance assessment before attempting lifts</li>
+                            <li>Consider special lifting equipment for constrained spaces</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Work Permit System <span>+</span></div>
+                    <div class="subcategory-content">
+                        <ul>
+                            <li>Job Safety Analysis (JSA) should be mandatory for all hot work permits involving vehicles</li>
+                            <li>Specialized supervision requirements for operations near process equipment</li>
+                            <li>Comprehensive site assessment including overhead clearances</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Emergency Response <span>+</span></div>
+                    <div class="subcategory-content">
+                        <ul>
+                            <li>Develop faster shutdown protocols for hydrocarbon releases</li>
+                            <li>Improve coordination between pump shutdown and valve closure operations</li>
+                            <li>Conduct regular drills focusing on hydrocarbon release scenarios</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="subcategory">
+                    <div class="subcategory-header">Design Considerations <span>+</span></div>
+                    <div class="subcategory-content">
+                        <ul>
+                            <li>Better protection for vulnerable impulse lines</li>
+                            <li>Improved layout to facilitate maintenance activities</li>
+                            <li>Clear marking of height restrictions in process areas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script for main collapsible sections
+        var coll = document.getElementsByClassName("collapsible");
+        for (var i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+        
+        // Script for subcategories
+        var subcategoryHeaders = document.getElementsByClassName("subcategory-header");
+        for (var i = 0; i < subcategoryHeaders.length; i++) {
+            subcategoryHeaders[i].addEventListener("click", function() {
+                var subcontent = this.nextElementSibling;
+                var parentContent = this.closest('.content');
+                
+                if (subcontent.style.display === "block") {
+                    subcontent.style.display = "none";
+                    this.querySelector("span").textContent = "+";
+                    
+                    // Adjust parent height
+                    parentContent.style.maxHeight = parentContent.scrollHeight - subcontent.scrollHeight + "px";
+                } else {
+                    subcontent.style.display = "block";
+                    this.querySelector("span").textContent = "-";
+                    
+                    // Adjust parent height
+                    parentContent.style.maxHeight = parentContent.scrollHeight + subcontent.scrollHeight + "px";
+                }
+            });
+        }
+        
+        // Open first collapsible by default
+        if (coll.length > 0) {
+            coll[0].click();
+        }
+    </script>
+</body>
+</html>
