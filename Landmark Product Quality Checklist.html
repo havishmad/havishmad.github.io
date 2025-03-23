@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Quality Checklist - Landmark Group</title>
+    <style>
+        :root {
+            --primary: #0066cc;
+            --secondary: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        .logo {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .checklist-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .info-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .info-group:last-child {
+            margin-right: 0;
+        }
+        
+        .info-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--gray);
+        }
+        
+        .info-group input, .info-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .progress {
+            height: 15px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .category {
+            margin-bottom: 30px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .category-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-name {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .category-score {
+            font-weight: bold;
+        }
+        
+        .category-items {
+            padding: 15px;
+        }
+        
+        .checklist-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .checklist-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .item-weight {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .rating-options {
+            display: flex;
+            margin-top: 10px;
+        }
+        
+        .rating-option {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px 0;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            margin-right: 5px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .rating-option:last-child {
+            margin-right: 0;
+        }
+        
+        .rating-option:hover {
+            background-color: #e9ecef;
+        }
+        
+        .rating-option.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .rating-option.selected-poor {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        
+        .rating-option.selected-fair {
+            background-color: var(--warning);
+            color: white;
+            border-color: var(--warning);
+        }
+        
+        .rating-option.selected-good {
+            background-color: var(--info);
+            color: white;
+            border-color: var(--info);
+        }
+        
+        .rating-option.selected-excellent {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .summary {
+            background-color: var(--secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .summary-title {
+            margin-top: 0;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .summary-category {
+            font-weight: bold;
+        }
+        
+        .total-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .btn-secondary {
+            background-color: var(--gray);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .comment-area {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .checklist-info {
+                flex-direction: column;
+            }
+            
+            .info-group {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .rating-options {
+                flex-wrap: wrap;
+            }
+            
+            .rating-option {
+                flex: auto;
+                width: 48%;
+                margin-right: 2%;
+                margin-bottom: 5px;
+            }
+            
+            .rating-option:nth-child(2n) {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Product Quality Checklist</h1>
+            <p>Apparel & Fashion Category - Landmark Group</p>
+        </header>
+        
+        <div class="checklist-info">
+            <div class="info-group">
+                <label for="product-name">Product Name</label>
+                <select id="product-name">
+                    <option value="">Select a product</option>
+                    <option value="Men's Casual T-Shirt">Men's Casual T-Shirt</option>
+                    <option value="Women's Formal Blouse">Women's Formal Blouse</option>
+                    <option value="Kids Graphic Hoodie">Kids Graphic Hoodie</option>
+                    <option value="Athletic Performance Wear">Athletic Performance Wear</option>
+                    <option value="Premium Denim Jeans">Premium Denim Jeans</option>
+                </select>
+            </div>
+            <div class="info-group">
+                <label for="product-id">Product ID</label>
+                <input type="text" id="product-id" placeholder="Product ID" readonly>
+            </div>
+            <div class="info-group">
+                <label for="inspector">Inspector Name</label>
+                <input type="text" id="inspector" placeholder="Enter your name">
+            </div>
+            <div class="info-group">
+                <label for="inspection-date">Inspection Date</label>
+                <input type="date" id="inspection-date">
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="progress-text">
+                <span id="completed-items">0</span> of <span id="total-items">15</span> items completed (<span id="completion-percentage">0%</span>)
+            </div>
+        </div>
+        
+        <!-- Category 1: Material & Construction -->
+        <div class="category" id="category-1">
+            <div class="category-header">
+                <h3 class="category-name">Material & Construction (35%)</h3>
+                <div class="category-score">Score: <span id="category-1-score">0</span> / 35</div>
+            </div>
+            <div class="category-items">
+                <!-- Item 1.1 -->
+                <div class="checklist-item" data-id="1.1" data-weight="8">
+                    <div class="item-header">
+                        <h4 class="item-title">Fabric Quality & Composition</h4>
+                        <span class="item-weight">Weight: 8%</span>
+                    </div>
+                    <p>Assess the fabric's feel, weight, and composition against product specifications.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="2">Poor</div>
+                        <div class="rating-option" data-score="4">Fair</div>
+                        <div class="rating-option" data-score="6">Good</div>
+                        <div class="rating-option" data-score="8">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-1.1">Comments:</label>
+                        <textarea id="comment-1.1" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 1.2 -->
+                <div class="checklist-item" data-id="1.2" data-weight="10">
+                    <div class="item-header">
+                        <h4 class="item-title">Quality of Imprint</h4>
+                        <span class="item-weight">Weight: 10%</span>
+                    </div>
+                    <p>Evaluate the clarity, durability, and precision of printed designs, logos, or patterns.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="2.5">Poor</div>
+                        <div class="rating-option" data-score="5">Fair</div>
+                        <div class="rating-option" data-score="7.5">Good</div>
+                        <div class="rating-option" data-score="10">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-1.2">Comments:</label>
+                        <textarea id="comment-1.2" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 1.3 -->
+                <div class="checklist-item" data-id="1.3" data-weight="7">
+                    <div class="item-header">
+                        <h4 class="item-title">Colorfastness & Dyeing Quality</h4>
+                        <span class="item-weight">Weight: 7%</span>
+                    </div>
+                    <p>Evaluate the color consistency and resistance to fading.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.75">Poor</div>
+                        <div class="rating-option" data-score="3.5">Fair</div>
+                        <div class="rating-option" data-score="5.25">Good</div>
+                        <div class="rating-option" data-score="7">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-1.3">Comments:</label>
+                        <textarea id="comment-1.3" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 1.4 -->
+                <div class="checklist-item" data-id="1.4" data-weight="5">
+                    <div class="item-header">
+                        <h4 class="item-title">Trim & Hardware Quality</h4>
+                        <span class="item-weight">Weight: 5%</span>
+                    </div>
+                    <p>Assess buttons, zippers, snaps, and other hardware for functionality and durability.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.25">Poor</div>
+                        <div class="rating-option" data-score="2.5">Fair</div>
+                        <div class="rating-option" data-score="3.75">Good</div>
+                        <div class="rating-option" data-score="5">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-1.4">Comments:</label>
+                        <textarea id="comment-1.4" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 1.5 -->
+                <div class="checklist-item" data-id="1.5" data-weight="5">
+                    <div class="item-header">
+                        <h4 class="item-title">Lining & Interlining Quality</h4>
+                        <span class="item-weight">Weight: 5%</span>
+                    </div>
+                    <p>Check the quality and attachment of linings, interlinings, and paddings.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.25">Poor</div>
+                        <div class="rating-option" data-score="2.5">Fair</div>
+                        <div class="rating-option" data-score="3.75">Good</div>
+                        <div class="rating-option" data-score="5">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-1.5">Comments:</label>
+                        <textarea id="comment-1.5" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Category 2: Fit & Dimension -->
+        <div class="category" id="category-2">
+            <div class="category-header">
+                <h3 class="category-name">Fit & Dimension (40%)</h3>
+                <div class="category-score">Score: <span id="category-2-score">0</span> / 40</div>
+            </div>
+            <div class="category-items">
+                <!-- Item 2.1 -->
+                <div class="checklist-item" data-id="2.1" data-weight="10">
+                    <div class="item-header">
+                        <h4 class="item-title">Size Accuracy</h4>
+                        <span class="item-weight">Weight: 10%</span>
+                    </div>
+                    <p>Measure key dimensions and compare to size specifications.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="2.5">Poor</div>
+                        <div class="rating-option" data-score="5">Fair</div>
+                        <div class="rating-option" data-score="7.5">Good</div>
+                        <div class="rating-option" data-score="10">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-2.1">Comments:</label>
+                        <textarea id="comment-2.1" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 2.2 -->
+                <div class="checklist-item" data-id="2.2" data-weight="8">
+                    <div class="item-header">
+                        <h4 class="item-title">Pattern Alignment</h4>
+                        <span class="item-weight">Weight: 8%</span>
+                    </div>
+                    <p>Check for proper alignment of patterns at seams and across panels.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="2">Poor</div>
+                        <div class="rating-option" data-score="4">Fair</div>
+                        <div class="rating-option" data-score="6">Good</div>
+                        <div class="rating-option" data-score="8">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-2.2">Comments:</label>
+                        <textarea id="comment-2.2" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 2.3 -->
+                <div class="checklist-item" data-id="2.3" data-weight="8">
+                    <div class="item-header">
+                        <h4 class="item-title">Symmetry & Balance</h4>
+                        <span class="item-weight">Weight: 8%</span>
+                    </div>
+                    <p>Assess the symmetry of components and overall balance of the garment.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="2">Poor</div>
+                        <div class="rating-option" data-score="4">Fair</div>
+                        <div class="rating-option" data-score="6">Good</div>
+                        <div class="rating-option" data-score="8">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-2.3">Comments:</label>
+                        <textarea id="comment-2.3" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 2.4 -->
+                <div class="checklist-item" data-id="2.4" data-weight="7">
+                    <div class="item-header">
+                        <h4 class="item-title">Drape & Stretch</h4>
+                        <span class="item-weight">Weight: 7%</span>
+                    </div>
+                    <p>Evaluate how the garment hangs and its stretch properties if applicable.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.75">Poor</div>
+                        <div class="rating-option" data-score="3.5">Fair</div>
+                        <div class="rating-option" data-score="5.25">Good</div>
+                        <div class="rating-option" data-score="7">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-2.4">Comments:</label>
+                        <textarea id="comment-2.4" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 2.5 -->
+                <div class="checklist-item" data-id="2.5" data-weight="7">
+                    <div class="item-header">
+                        <h4 class="item-title">Comfort & Wearability</h4>
+                        <span class="item-weight">Weight: 7%</span>
+                    </div>
+                    <p>Assess comfort factors such as ease of movement and skin-friendly construction.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.75">Poor</div>
+                        <div class="rating-option" data-score="3.5">Fair</div>
+                        <div class="rating-option" data-score="5.25">Good</div>
+                        <div class="rating-option" data-score="7">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-2.5">Comments:</label>
+                        <textarea id="comment-2.5" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Category 3: Finishing & Presentation -->
+        <div class="category" id="category-3">
+            <div class="category-header">
+                <h3 class="category-name">Finishing & Presentation (25%)</h3>
+                <div class="category-score">Score: <span id="category-3-score">0</span> / 25</div>
+            </div>
+            <div class="category-items">
+                <!-- Item 3.1 -->
+                <div class="checklist-item" data-id="3.1" data-weight="6">
+                    <div class="item-header">
+                        <h4 class="item-title">Labeling & Care Instructions</h4>
+                        <span class="item-weight">Weight: 6%</span>
+                    </div>
+                    <p>Check accuracy and placement of labels, tags, and care instructions.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.5">Poor</div>
+                        <div class="rating-option" data-score="3">Fair</div>
+                        <div class="rating-option" data-score="4.5">Good</div>
+                        <div class="rating-option" data-score="6">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-3.1">Comments:</label>
+                        <textarea id="comment-3.1" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 3.2 -->
+                <div class="checklist-item" data-id="3.2" data-weight="5">
+                    <div class="item-header">
+                        <h4 class="item-title">Cleanliness & Presentation</h4>
+                        <span class="item-weight">Weight: 5%</span>
+                    </div>
+                    <p>Assess the garment for stains, marks, odors, and overall cleanliness.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.25">Poor</div>
+                        <div class="rating-option" data-score="2.5">Fair</div>
+                        <div class="rating-option" data-score="3.75">Good</div>
+                        <div class="rating-option" data-score="5">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-3.2">Comments:</label>
+                        <textarea id="comment-3.2" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 3.3 -->
+                <div class="checklist-item" data-id="3.3" data-weight="5">
+                    <div class="item-header">
+                        <h4 class="item-title">Pressing & Finishing</h4>
+                        <span class="item-weight">Weight: 5%</span>
+                    </div>
+                    <p>Check the quality of pressing, ironing, and overall finishing.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.25">Poor</div>
+                        <div class="rating-option" data-score="2.5">Fair</div>
+                        <div class="rating-option" data-score="3.75">Good</div>
+                        <div class="rating-option" data-score="5">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-3.3">Comments:</label>
+                        <textarea id="comment-3.3" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 3.4 -->
+                <div class="checklist-item" data-id="3.4" data-weight="5">
+                    <div class="item-header">
+                        <h4 class="item-title">Packaging Quality</h4>
+                        <span class="item-weight">Weight: 5%</span>
+                    </div>
+                    <p>Evaluate packaging materials, folding, and presentation.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1.25">Poor</div>
+                        <div class="rating-option" data-score="2.5">Fair</div>
+                        <div class="rating-option" data-score="3.75">Good</div>
+                        <div class="rating-option" data-score="5">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-3.4">Comments:</label>
+                        <textarea id="comment-3.4" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Item 3.5 -->
+                <div class="checklist-item" data-id="3.5" data-weight="4">
+                    <div class="item-header">
+                        <h4 class="item-title">Brand Representation</h4>
+                        <span class="item-weight">Weight: 4%</span>
+                    </div>
+                    <p>Assess how well the product reflects Landmark Group's quality standards and brand image.</p>
+                    <div class="rating-options">
+                        <div class="rating-option" data-score="0">Not Assessed</div>
+                        <div class="rating-option" data-score="1">Poor</div>
+                        <div class="rating-option" data-score="2">Fair</div>
+                        <div class="rating-option" data-score="3">Good</div>
+                        <div class="rating-option" data-score="4">Excellent</div>
+                    </div>
+                    <div class="feedback">
+                        <label for="comment-3.5">Comments:</label>
+                        <textarea id="comment-3.5" class="comment-area" placeholder="Add comments here..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <h3 class="summary-title">Quality Assessment Summary</h3>
+            <div class="summary-row">
+                <span class="summary-category">Material & Construction:</span>
+                <span id="summary-category-1-score">0 / 35 (0%)</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-category">Fit & Dimension:</span>
+                <span id="summary-category-2-score">0 / 40 (0%)</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-category">Finishing & Presentation:</span>
+                <span id="summary-category-3-score">0 / 25 (0%)</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-category">Total Quality Score:</span>
+                <span class="total-score" id="summary-total-score">0 / 100 (0%)</span>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button id="reset-btn" class="btn-secondary">Reset Form</button>
+            <button id="export-csv-btn" class="btn-primary">Export to CSV</button>
+            <button id="save-btn" class="btn-success">Save Assessment</button>
+        </div>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize variables
+                const ratingOptions = document.querySelectorAll('.rating-option');
+                const progressBar = document.getElementById('progress-bar');
+                const completedItemsEl = document.getElementById('completed-items');
+                const completionPercentageEl = document.getElementById('completion-percentage');
+                const totalItems = document.querySelectorAll('.checklist-item').length;
+                let completedItems = 0;
+                
+                // Set the total items count
+                document.getElementById('total-items').textContent = totalItems;
+                
+                // Initialize date picker with current date
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('inspection-date').value = today;
+                
+                // Handle product ID generation based on product name selection
+                const productNameSelect = document.getElementById('product-name');
+                const productIdInput = document.getElementById('product-id');
+                
+                // Product ID mapping
+                const productIdMap = {
+                    "Men's Casual T-Shirt": "LM-TSH-001",
+                    "Women's Formal Blouse": "LW-BLO-002",
+                    "Kids Graphic Hoodie": "LK-HOO-003",
+                    "Athletic Performance Wear": "LA-PER-004",
+                    "Premium Denim Jeans": "LP-DEN-005"
+                };
+                
+                // Update product ID when product name changes
+                productNameSelect.addEventListener('change', function() {
+                    const selectedProduct = this.value;
+                    productIdInput.value = productIdMap[selectedProduct] || '';
+                });
+                
+                // Handle rating option selection
+                ratingOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const item = this.closest('.checklist-item');
+                        const previousSelected = item.querySelector('.rating-option.selected');
+                        
+                        // Check if an option was already selected
+                        const wasCompleted = previousSelected !== null;
+                        
+                        // Remove selected class from all options in this item
+                        item.querySelectorAll('.rating-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                            opt.classList.remove('selected-poor');
+                            opt.classList.remove('selected-fair');
+                            opt.classList.remove('selected-good');
+                            opt.classList.remove('selected-excellent');
+                        });
+                        
+                        // Add selected class to clicked option
+                        this.classList.add('selected');
+                        
+                        // Add color class based on rating
+                        const score = parseFloat(this.getAttribute('data-score'));
+                        const maxScore = parseFloat(item.getAttribute('data-weight'));
+                        
+                        if (score === 0) {
+                            // Not assessed
+                        } else if (score <= maxScore * 0.25) {
+                            this.classList.add('selected-poor');
+                        } else if (score <= maxScore * 0.5) {
+                            this.classList.add('selected-fair');
+                        } else if (score <= maxScore * 0.75) {
+                            this.classList.add('selected-good');
+                        } else {
+                            this.classList.add('selected-excellent');
+                        }
+                        
+                        // Update completion count if this is a new completion
+                        if (!wasCompleted && score > 0) {
+                            completedItems++;
+                        } else if (wasCompleted && score === 0) {
+                            completedItems--;
+                        }
+                        
+                        // Update progress
+                        updateProgress();
+                        
+                        // Update scores
+                        updateScores();
+                    });
+                });
+                
+                // Function to update progress bar
+                function updateProgress() {
+                    const percentage = Math.round((completedItems / totalItems) * 100);
+                    progressBar.style.width = percentage + '%';
+                    completedItemsEl.textContent = completedItems;
+                    completionPercentageEl.textContent = percentage + '%';
+                }
+                
+                // Function to update category and total scores
+                function updateScores() {
+                    const categories = [1, 2, 3];
+                    let totalScore = 0;
+                    
+                    categories.forEach(catNum => {
+                        const categoryItems = document.querySelectorAll(`#category-${catNum} .checklist-item`);
+                        let categoryScore = 0;
+                        let categoryMaxScore = 0;
+                        
+                        categoryItems.forEach(item => {
+                            const selectedOption = item.querySelector('.rating-option.selected');
+                            const weight = parseFloat(item.getAttribute('data-weight'));
+                            categoryMaxScore += weight;
+                            
+                            if (selectedOption) {
+                                const score = parseFloat(selectedOption.getAttribute('data-score'));
+                                categoryScore += score;
+                            }
+                        });
+                        
+                        // Update category score display
+                        document.getElementById(`category-${catNum}-score`).textContent = categoryScore.toFixed(1);
+                        
+                        // Update category summary
+                        const categoryPercentage = categoryMaxScore > 0 ? Math.round((categoryScore / categoryMaxScore) * 100) : 0;
+                        document.getElementById(`summary-category-${catNum}-score`).textContent = 
+                            `${categoryScore.toFixed(1)} / ${categoryMaxScore} (${categoryPercentage}%)`;
+                        
+                        totalScore += categoryScore;
+                    });
+                    
+                    // Update total score
+                    const totalPercentage = Math.round(totalScore);
+                    document.getElementById('summary-total-score').textContent = 
+                        `${totalScore.toFixed(1)} / 100 (${totalPercentage}%)`;
+                }
+                
+                // Reset form button
+                document.getElementById('reset-btn').addEventListener('click', function() {
+                    if (confirm('Are you sure you want to reset the form? All data will be lost.')) {
+                        // Clear all selections
+                        ratingOptions.forEach(option => {
+                            option.classList.remove('selected');
+                            option.classList.remove('selected-poor');
+                            option.classList.remove('selected-fair');
+                            option.classList.remove('selected-good');
+                            option.classList.remove('selected-excellent');
+                        });
+                        
+                        // Clear all comments
+                        document.querySelectorAll('.comment-area').forEach(textarea => {
+                            textarea.value = '';
+                        });
+                        
+                        // Reset progress
+                        completedItems = 0;
+                        updateProgress();
+                        
+                        // Reset scores
+                        updateScores();
+                    }
+                });
+                
+                // Save assessment button
+                document.getElementById('save-btn').addEventListener('click', function() {
+                    alert('Assessment saved successfully!');
+                    // In a real application, this would save to a database
+                });
+                
+                // Export to CSV button
+                document.getElementById('export-csv-btn').addEventListener('click', function() {
+                    exportToCSV();
+                });
+                
+                // Function to export assessment data to CSV
+                function exportToCSV() {
+                    const productName = document.getElementById('product-name').value || 'Unnamed Product';
+                    const productID = document.getElementById('product-id').value || 'No ID';
+                    const inspector = document.getElementById('inspector').value || 'Unknown Inspector';
+                    const inspectionDate = document.getElementById('inspection-date').value || today;
+                    
+                    let csvContent = 'data:text/csv;charset=utf-8,';
+                    
+                    // Add header
+                    csvContent += 'Product Quality Assessment - Landmark Group\r\n';
+                    csvContent += `Product Name,${productName}\r\n`;
+                    csvContent += `Product ID,${productID}\r\n`;
+                    csvContent += `Inspector,${inspector}\r\n`;
+                    csvContent += `Date,${inspectionDate}\r\n\r\n`;
+                    
+                    // Add column headers
+                    csvContent += 'Category,Item,Weight,Score,Max Score,Percentage,Comments\r\n';
+                    
+                    // Add all checklist items
+                    const categories = [
+                        { id: 1, name: 'Material & Construction' },
+                        { id: 2, name: 'Fit & Dimension' },
+                        { id: 3, name: 'Finishing & Presentation' }
+                    ];
+                    
+                    categories.forEach(category => {
+                        const categoryItems = document.querySelectorAll(`#category-${category.id} .checklist-item`);
+                        
+                        categoryItems.forEach(item => {
+                            const itemId = item.getAttribute('data-id');
+                            const itemTitle = item.querySelector('.item-title').textContent;
+                            const weight = parseFloat(item.getAttribute('data-weight'));
+                            const selectedOption = item.querySelector('.rating-option.selected');
+                            const score = selectedOption ? parseFloat(selectedOption.getAttribute('data-score')) : 0;
+                            const percentage = weight > 0 ? Math.round((score / weight) * 100) : 0;
+                            const comments = item.querySelector('.comment-area').value.replace(/,/g, ';').replace(/\n/g, ' ');
+                            
+                            csvContent += `${category.name},${itemTitle},${weight}%,${score},${weight},${percentage}%,"${comments}"\r\n`;
+                        });
+                    });
+                    
+                    // Add summary section
+                    csvContent += '\r\nSummary\r\n';
+                    categories.forEach(category => {
+                        const summaryCategoryScore = document.getElementById(`summary-category-${category.id}-score`).textContent;
+                        csvContent += `${category.name},${summaryCategoryScore}\r\n`;
+                    });
+                    
+                    const totalScore = document.getElementById('summary-total-score').textContent;
+                    csvContent += `Total,${totalScore}\r\n`;
+                    
+                    // Create download link
+                    const encodedUri = encodeURI(csvContent);
+                    const link = document.createElement('a');
+                    link.setAttribute('href', encodedUri);
+                    link.setAttribute('download', `${productName.replace(/\s+/g, '_')}_Quality_Assessment_${inspectionDate}.csv`);
+                    document.body.appendChild(link);
+                    
+                    // Trigger download
+                    link.click();
+                    
+                    // Clean up
+                    document.body.removeChild(link);
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
